@@ -3,31 +3,35 @@ function Movie (title, age, time) {
   this.age = age
   this.time = time;
 }
-function Human (humanAge, watchTime) {
-  this.humanAge = humanAge;
-  this.watchTime = watchTime;
+
+
+
+Movie.prototype.moviePrice = function () {
+  let ticketPrice = 10;
+  if(parseInt(this.time) >= 6 &&  parseInt(this.age) < 12) { //children discount
+    ticketPrice -= 2;
+} else if (parseInt(this.time) >= 6 && parseInt(this.age) > 65) { //senior discount
+    ticketPrice -= 2;
+} else if (parseInt(this.time) < 6) { //matinee
+    ticketPrice -= 3;
+}  return ticketPrice;
 }
 
 
-
-Human.prototype.ticketPrice = function () {
-    let ticketPrice = 10;
-  if(this.watchTime >= 6 && this.humanAge < 12) { //children discount
-    ticketPrice -= 2
-} else if (this.watchTime >= 6 && this.humanAge > 65) { //senior discount
-    ticketPrice -= 2
-} else if (this.watchTime < 6) { //matinee
-    ticketPrice -= 3
-} console.log(ticketPrice);
+function displayTicketInfo(ticketToDisplay){
+  let htmlForTicketInfo = ticketToDisplay.title + " " + ticketToDisplay.time + "pm " + "$" + ticketToDisplay.moviePrice();
+  return htmlForTicketInfo;
 }
 
+$(document).ready(function() {
+  $("form#movieOptions").submit(function(event) {
+    event.preventDefault();
+    const title = $("#movie").val();
+    const time = parseInt($("#movieTime").val());
+    const age = $("input#age-input").val();
+    let newTicket = new Movie(title,age,time);
+    $("p#output").html(displayTicketInfo(newTicket))
+  })
+})
 
-Movie.prototype.movieDetails = function () {
-  return this.title + " " + this.time;
-  console.log(movieDetails)
-};
 
-
-
-const humanAge = $("input#userAge").val();
-const humWantsToWatchTime = $("input#watchTime").val()
